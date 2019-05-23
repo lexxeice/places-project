@@ -1,16 +1,24 @@
-# The Places Project
+# README
 
-The idea is to track favorite places on a map
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-#### all detailed info could be found there: https://trello.com/b/fIAzJAAw/places
+Things you may want to cover:
 
-## The Process
+* Ruby version: 2.6.3
 
-* Fork
-* create a feature/""feature-name""
-* create a bug/""bug-name""
-* PR
-* Review by members
-* Review by mentor
-* [WIP] deploy
+* [WIP] System dependencies: Bootstrap
 
+* [WIP] Configuration: RSpec, PostgreSQL
+
+* [WIP] Database creation
+
+* Database initialization: rails db:setup
+
+* [WIP] How to run the test suite
+
+* [WIP] Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions: use Heroku
+
+* ...
