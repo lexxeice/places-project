@@ -12,6 +12,22 @@
   </head>
 
   <body class="d-flex flex-column" style="min-height: 100vh;">
-    <%= yield %>
+    <header>
+      <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+        <%= yield :nav %>
+      </nav>
+    </header>
+
+    <main class="flex-fill">
+      <div class="container">
+        <%= yield :main %>
+      </div>
+    </main>
+
+    <footer class="card-footer p-0">
+      <div class="container">
+        <span class="text-muted small">Places Inc. &copy; 2019 <%= mail_to 'email@example.edu', 'Write us an e-mail' %></span>
+      </div>
+    </footer>
   </body>
 </html>

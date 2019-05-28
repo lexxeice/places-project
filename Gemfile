@@ -9,17 +9,17 @@ gem 'rails', '~> 5.2.3'
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
-# Use SCSS for stylesheets
+# Use SCSS for stylesheets with Bootstrap (bootsrap gem needs jquery-rails)
 gem 'sass-rails', '~> 5.0'
 gem 'bootstrap', '~> 4.3', '>= 4.3.1'
+gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'mini_racer', platforms: :ruby
-gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
 
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.2'
+# Do not use CoffeeScript
+# gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -53,12 +53,16 @@ group :development do
 end
 
 group :test do
+  # Application is configured to use RSpec within BDD approach
   gem 'rspec-rails', '~> 3.8', '>= 3.8.2'
+  # Templates rendering assertions was extracted to rails-controller-testing
+  gem 'rails-controller-testing', '~> 1.0', '>= 1.0.4'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
-  # Easy installation and use of chromedriver to run system tests with Chrome
-  gem 'chromedriver-helper'
+  # Easy installation and use of chromedriver to run system tests with Chrome (depricated in favour of webdrivers)
+  # gem 'chromedriver-helper'
+  gem 'webdrivers', '~> 3.9', '>= 3.9.4'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

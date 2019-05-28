@@ -11,12 +11,10 @@ module PlacesProject
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
     config.generators do |g|
-      g.test_framework :rspec
-      g.helper_specs false
-      g.controller_specs false
-      g.view_specs false
-      g.routing_specs false
-      g.request_specs false
+      g.test_framework :rspec, controller_specs: false
+      g.javascript_engine :js
+      g.assets false
+      g.helper false
     end
 
     # Settings in config/environments/* take precedence over those specified here.
