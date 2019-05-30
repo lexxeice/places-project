@@ -1,24 +1,27 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[WIP] Necessary steps to get the application up and running:
 
-Things you may want to cover:
+Ruby version:
+  2.6.3
 
-* Ruby version: 2.6.3
+Rails version:
+  5.2.3
 
-* [WIP] System dependencies: Bootstrap
+System dependencies:
+  are managed by Bundler (https://bundler.io/) (see Gemfile for details)
 
-* [WIP] Configuration: RSpec, PostgreSQL
+Configuration:
+  see "config" directory
 
-* [WIP] Database creation
+Database initialization:
+  rails db:setup (create, load schema and seed)
+  rails db:migrate
 
-* Database initialization: rails db:setup
+How to run the test suite:
+  bundle exec rspec
 
-* [WIP] How to run the test suite
+Services (job queues, cache servers, search engines, etc.)
 
-* [WIP] Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions: use Heroku
-
-* ...
+Deployment instructions:
+  use Heroku
