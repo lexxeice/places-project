@@ -9,22 +9,19 @@ RSpec.describe 'Things user sees on the root page', type: :system do
     expect(page).to have_selector('nav', text: 'Menu')
   end
 
-  it '\'Sign Up\' in the navbar' do
-    expect(page).to have_selector('nav', text: 'Sign Up')
-  end
-
-  it '\'Sign In\' in the navbar' do
-    expect(page).to have_selector('nav', text: 'Sign In')
+  it '\'Sign Up/In\' links in the navbar' do
+    expect(page).to have_selector('nav', text: 'Sign Up') &&
+                    have_selector('nav', text: 'Sign In')
   end
 
   it 'beautiful Bootstrap layout' do
-    expect(page).to have_selector('body', class: 'd-flex') &
+    expect(page).to have_selector('body', class: 'd-flex') &&
                     have_selector('div', class: 'container').at_least(1)
   end
 
   it 'general project desription' do
-    expect(page).to have_title('Places') &
-                    have_text('Mark') &
+    expect(page).to have_title('Places') &&
+                    have_text('Mark') &&
                     have_text('Share')
   end
 end
