@@ -60,6 +60,7 @@ group :test do
   # Check styles with RuboCop
   gem 'rubocop-rails', group: :production
   gem 'rubocop-rspec'
+  gem 'shoulda-matchers'
   # Use Capybara for feature testing
   gem 'capybara'
   gem 'webdrivers', '~> 3.9', '>= 3.9.4'
