@@ -1,5 +1,6 @@
 class CreatePlaces < ActiveRecord::Migration[5.2]
-  def change
+  def up
+    drop_table :places
     create_table :places do |t|
       t.string :title
       t.text :description
