@@ -3,6 +3,9 @@ require:
   - rubocop-rspec
 Documentation:
   Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
 AllCops:
   Exclude:
     - 'db/**/*'
