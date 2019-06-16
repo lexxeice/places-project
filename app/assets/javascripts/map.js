@@ -13,7 +13,6 @@ function initMap() {
   var controlDiv = document.getElementById('floating-panel');
   map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
 
-  // This event listener will call addMarker() when the map is clicked.
   map.addListener('click', function(event) {
     addMarker(event.latLng);
   });
@@ -31,19 +30,20 @@ function addMarker(location) {
   });
 
   // Form
-  var contentString =    '<form id="place" action="/place" method="post">'+
+  var formCreate =    '<form id="place" name="place" action="/place" method="post">'+
                          '<table>' +
                          '<tr><td><input type="text" name="title" id="title" placeholder="Title" maxlength = "50" size="40" autofocus=true required=true /> </td> </tr>' +
                          '<tr><td> <textarea name="description" id="description" placeholder="Description" cols="40" rows="8" maxlength = "300" required></textarea></td> </tr>' +
-                         '<tr><td><input type="submit" value="Create place!"/></td></tr>' +
-                         '<input type="hidden" name="coordinates" id="coordinates" value="'+location+'"> </form>';
+                         '<tr><td><input type="submit" value="Create place!" /></td></tr>' +
+                         '<input type="hidden" name="coordinates" id="coordinates" value="'+location+'"></form>';
 
 
   var stub = 'CoOL! You are my hero'
   // Content for popup
   infowindowCreate = new google.maps.InfoWindow({
-    content: contentString
+    content: formCreate
   });
+
   infowindowView = new google.maps.InfoWindow({
     content: stub
   });
