@@ -13,7 +13,6 @@ function infoCallbackOpen(infowindow, marker) { return function() {
 function infoCallbackClose(infowindow, marker) { return function() {
   infowindow.close(map, marker); };
 }
-
   // Adds a marker to the map and push to the array.
 function addMarker(location) {
 
@@ -55,6 +54,7 @@ function addMarker(location) {
   });
 }
 
+
 function initMap() {
   var haightAshbury = {lat: 53.928365, lng: 27.685359};
 
@@ -62,6 +62,51 @@ function initMap() {
     zoom: 15,
     center: haightAshbury,
     // mapTypeId: 'terrain'
+
+  });
+
+  $.ajax({
+    url: '/places',
+    type: 'GET',
+    success: function(places) {
+      places.forEach(place => {
+        var location = {lat: place.coordinates.x, lng: place.coordinates.y};
+        // addMarker(location);
+        var marker = new google.maps.Marker({
+          position: location,
+          map: map,
+          draggable: true,
+          animation: google.maps.Animation.DROP,
+          title:  place.title
+        });
+        var formView =  '<div id="content">'+
+                  '<h1 id="firstHeading" class="firstHeading">"'+place.title+'"</h1>'+
+                  '<div id="bodyContent">'+
+                  '<p><b>"'+place.description+'"</b></p>'+
+                  '</div>'
+                  
+                      ;
+
+        infowindow = new google.maps.InfoWindow({
+          content: formView
+        });
+      
+        infowindow.open(map, marker);
+        markers.push(marker);
+
+        // Lestclick open popup
+        google.maps.event.addListener(marker, 'click', infoCallbackOpen(infowindow, marker));
+        // Rightclick close popup
+        google.maps.event.addListener(marker, 'rightclick', infoCallbackClose(infowindow, marker));
+
+        google.maps.event.addListener(infowindow, 'closeclick', function(){
+          if (infowindow.getContent() == formCreate){
+            marker.setMap(null);
+          }
+        });
+
+      });
+    }
   });
 
   map.addListener('click', function(event) {
@@ -88,5 +133,27 @@ function submitForm() {
     url: '/places',
     data: { place: { title: title, description: description, coordinates: coordinates} },
     success: updateContent()
+  });
+}
+
+$(document).on('click', '.update', function(){
+  var formView =  '<form id="places" name="place">'+
+                    '<table>' +
+                    '<tr><td><input value="'+ $(this).data('title') +'" type="text" name="title" id="title" placeholder="Title" maxlength = "50" size="40" autofocus=true required=true /> </td> </tr>' +
+                    '<tr><td> <textarea name="description" id="description" placeholder="Description" cols="40" rows="8" maxlength = "300" required>'+  $(this).data('description') +'</textarea></td> </tr>' +
+                    '<tr><td><input type="button" id="btn" value="Update place!" onclick="submitUpdateForm();" /></td></tr>' +
+                    '<input type="hidden" name="id" id="id" value="'+ $(this).data('id')+'"></form>';
+  infowindow.setContent(formView);
+});
+
+function submitUpdateForm() {
+  title = document.getElementById("title").value;
+  description = document.getElementById("description").value;
+  id = document.getElementById("id").value;
+  $.ajax({
+    type: 'PATCH',
+    url: '/places/'+id,
+    data: { place: { title: title, description: description}, id: id }
+    
   });
 }
