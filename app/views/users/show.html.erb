@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     #map {
-        height: 550%;
+        height: 500px;
         width: 100%;
       }
       html, body {
@@ -28,6 +28,12 @@
           </h1>
         </section>
       </aside>
+    </div>
+
+    <div class="formPlaces" id="formPlaces" hidden="true">
+      <%=render 'places/formCreate'%>
+      <%=render 'places/formUpdate'%>
+      <%=render 'places/formView'%>
     </div>
 
     <script async defer
