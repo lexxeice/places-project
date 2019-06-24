@@ -240,7 +240,7 @@ function updatePlace() {
 }
 
 function submitUpdateForm() {
-  let = id = current_place_id;
+  let id = current_place_id;
   title  = document.getElementById('title-conf').value;
   description  = document.getElementById('description-conf').value;
 
