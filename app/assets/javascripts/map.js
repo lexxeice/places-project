@@ -107,7 +107,7 @@ function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 10,
     center: haightAshbury,
-    // mapTypeId: 'terrain'
+    mapTypeId: 'satellite'
 
   });
 
@@ -214,21 +214,23 @@ function createView(){
 }
 
 function deletePlace(){
-  $.ajax({
-    type: 'DELETE',
-    url: '/places/'+current_place_id,
-    headers : {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    },
-    data: {id: current_place_id},
-    success: current_marker.setMap(null)
-  });
+  if (confirm("Are you sure?")) {
+    $.ajax({
+      type: 'DELETE',
+      url: '/places/'+current_place_id,
+      headers : {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      data: {id: current_place_id},
+      success: current_marker.setMap(null)
+    });
+  }
 }
 
 function updatePlace() {
   if (event.target.id === 'btn-upd') {
     title = event.currentTarget.childNodes[1].innerText;
-    description = event.currentTarget.childNodes[4].innerText;
+    description = event.currentTarget.childNodes[3].innerText;
 
     formUpdate.title.attributes[0].value = title;
     formUpdate.description.innerHTML = description;
@@ -253,7 +255,7 @@ function submitUpdateForm() {
   $.ajax({
     type: 'PATCH',
     url: '/places/' + id,
-    headers : {
+  headers : {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
     data: { title: title, description: description, id: id },

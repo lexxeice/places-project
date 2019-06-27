@@ -20,6 +20,6 @@ RSpec.describe 'Things user sees on the update page', type: :system do
     fill_in 'Password confirmation', with: '1234567'
 
     click_button 'Save changes'
-    expect(page).to have_selector('h1', text: 'G3rmaN')
+    expect(find(id: 'user_first_name').value).to eq 'G3rmaN'
   end
 end
