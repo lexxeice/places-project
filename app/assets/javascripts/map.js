@@ -1,7 +1,5 @@
 (function() {
-   window.onload = function() {
-     initMap();
-   }
+
   var map;
   var markers = [];
   var infowindows = [];
@@ -104,7 +102,7 @@
     marker_id[current_place_id] = current_marker;
   }
 
-  function initMap() {
+  document.addEventListener("turbolinks:load", function initMap() {
     var haightAshbury = {lat: 53.928365, lng: 27.685359};
 
     map = new google.maps.Map(document.getElementById('map'), {
@@ -126,7 +124,7 @@
       deleteMarkers();
       addMarker(event.latLng);
     });
-  }
+  });
 
   function setAllMarkers(){
     $.ajax({
