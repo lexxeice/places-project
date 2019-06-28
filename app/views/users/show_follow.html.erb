@@ -12,31 +12,19 @@
 <% end %>
 
 <% content_for :main do %>
-<div class="row">
-  <aside class="col-md-4">
-    <section class="user_info">
-      <%= gravatar_for @user %>
-      <h1><%= @user.first_name %></h1>
-    </section>
-    <section class="stats">
-      <%= render 'shared/stats' %>
-      <% if @users.any? %>
-        <div class="user_avatars">
-          <% @users.each do |user| %>
-            <%= link_to gravatar_for(user, size: 30), user %>
-          <% end %>
-        </div>
-      <% end %>
-    </section>
-  </aside>
-  <div class="col-md-8">
-    <h3><%= @title %></h3>
+  <div class="d-inline-flex"><h1><%= gravatar_for @user %> <%= @user.first_name %></h1><%= render 'follow_form' if logged_in? %></div>
+  <%= render 'shared/stats' %>
+  <% if @users.any? %>
+    <div class="user_avatars pt-2">
+    <% @users.each do |user| %>
+      <%= link_to gravatar_for(user, size: 48), user, title: user.first_name, class: 'pl-1' %>
+    <% end %>
+    </div>
+  <% end %>
+  <div class="pt-2"><h3><%= @title %></h3></div>
     <% if @users.any? %>
       <ul class="users follow">
         <%= render @users %>
       </ul>
-      <%= will_paginate %>
     <% end %>
-  </div>
-</div>
 <% end %>

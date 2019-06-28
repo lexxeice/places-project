@@ -12,9 +12,8 @@
 <% end %>
 
 <% content_for :main do %>
-  <h1><%= gravatar_for @user %> <%= @user.first_name %></h1>
+  <div class="d-inline-flex"><h1><%= gravatar_for @user %> <%= @user.first_name %></h1><%= render 'follow_form' if logged_in? %></div>
   <%= render 'shared/stats' %>
-  <%= render 'follow_form' if logged_in? %>
   <%= render 'show_map' %>
   <div class="formPlaces" id="formPlaces" hidden="true">
     <%=render 'places/formCreate'%>
