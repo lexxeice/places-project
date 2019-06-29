@@ -248,36 +248,54 @@
 
   function submitUpdateForm() {
     let id = current_place_id;
-    title  = document.getElementById('title-conf').value;
-    description  = document.getElementById('description-conf').value;
 
     formView.getElementsByTagName('label')[0].textContent = title;
     formView.getElementsByTagName('label')[1].textContent = description;
 
-    if(!(!title || !description)){
-      $.ajax({
-        type: 'PATCH',
-        url: '/places/' + id,
-        headers : {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        data: { title: title, description: description },
-        success: function(){
-          current_infowindow.setContent(formView.innerHTML);
-        }
-      });
-    }
+    $.ajax({
+      type: 'PATCH',
+      url: '/places/' + id,
+      headers : {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      data: { title: title, description: description },
+      success: function(){
+        current_infowindow.setContent(formView.innerHTML);
+      }
+    });
   }
 
   $(document).on( 'click', '#btn-del', function() {
-      deletePlace();
+    deletePlace();
   });
 
   $(document).on( 'click', '#btn-upd', function() {
-      updatePlace();
+    updatePlace();
+  });
+
+  $(document).on( 'click', '#btn-create', function() {
+    var description_form = document.getElementById('description').value;
+    if(!description_form.match(/.*\S+.*/)){
+      document.getElementById('description').value = '';
+    }
   });
 
   $(document).on( 'click', '#btn-upd-conf', function() {
+
+    title  = document.getElementById('title-conf').value;
+    description  = document.getElementById('description-conf').value;
+
+    document.getElementById('title-conf').value = document.getElementById('title-conf').value.replace(/\s+/g, '');
+    document.getElementById('description-conf').value = document.getElementById('description-conf').value.replace(/\s+/g, '');
+
+    var title_form = $('#title-conf')[0];
+    var description_form = $('#description-conf')[0]
+
+    if (title_form.checkValidity() && description_form.checkValidity()) {
       submitUpdateForm();
+    }else {
+      description_form.reportValidity();
+      title_form.reportValidity();
+    }
   });
 })();
