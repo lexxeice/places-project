@@ -40,7 +40,7 @@
     var marker = new google.maps.Marker({
       position: location,
       map: map,
-      // draggable: true,
+      draggable: false,
       animation: google.maps.Animation.DROP,
       title: 'Your marker',
     });
@@ -103,27 +103,25 @@
   }
 
   document.addEventListener("turbolinks:load", function initMap() {
-    var haightAshbury = {lat: 53.928365, lng: 27.685359};
+    if (document.getElementById("map"))
+    {
+      map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: new google.maps.LatLng(53.928365, 27.685359),
+        mapTypeId: 'satellite'});
 
-    map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
-      center: haightAshbury,
-      mapTypeId: 'satellite'
+      setAllMarkers();
 
-    });
+      formCreate = document.getElementById('placeCreate');
+      formView = document.getElementById('placeView');
+      formUpdate = document.getElementById('placeUpdate');
 
-    setAllMarkers();
+      current_infowindow = new google.maps.InfoWindow({});
 
-    formCreate = document.getElementById('placeCreate');
-    formView = document.getElementById('placeView');
-    formUpdate = document.getElementById('placeUpdate');
-
-    current_infowindow = new google.maps.InfoWindow({});
-
-    map.addListener('click', function(event) {
-      deleteMarkers();
-      addMarker(event.latLng);
-    });
+      map.addListener('click', function(event) {
+        deleteMarkers();
+        addMarker(event.latLng);});
+    }
   });
 
   function setAllMarkers(){
