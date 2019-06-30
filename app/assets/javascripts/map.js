@@ -17,6 +17,7 @@
   var infowindow_id = {};
   var marker_id = {};
   var last_id = 0;
+  var callBackContent;
 
   function infoCallbackOpen(infowindow, marker) { return function() {
     infowindow.open(map, marker); };
@@ -60,6 +61,9 @@
     current_marker = marker;
 
     google.maps.event.addListener(marker,'click', function() {
+      if (callBackContent){
+        current_infowindow.setContent(callBackContent);
+      }
       current_place_id = Number(Object.keys(marker_id).find(key => marker_id[key] === marker));
       current_marker = marker;
       current_infowindow = infowindow_id[current_place_id]
@@ -119,6 +123,9 @@
       current_infowindow = new google.maps.InfoWindow({});
 
       map.addListener('click', function(event) {
+        if (callBackContent){
+          current_infowindow.setContent(callBackContent);
+        }
         deleteMarkers();
         addMarker(event.latLng);});
     }
@@ -157,6 +164,9 @@
           current_infowindow = infowindow;
 
           google.maps.event.addListener(marker,'click', function() {
+            if (callBackContent){
+              current_infowindow.setContent(callBackContent);
+            }
             current_place_id = place.id;
             current_marker = marker;
             current_infowindow = infowindow_id[current_place_id]
@@ -204,8 +214,8 @@
     let currentView = formView;
 
     currentView.getElementsByTagName('div')[0].id = current_place_id;
-    currentView.getElementsByTagName('label')[0].textContent = title;
-    currentView.getElementsByTagName('label')[1].textContent = description;
+    currentView.getElementsByTagName('label')[0].textContent = title.replace(/(^\s*)|(\s*)$/g, '\n' && '');
+    currentView.getElementsByTagName('label')[1].textContent = description.replace(/(^\s*)|(\s*)$/g, '\n' && '');
     currentView.coordinates.value = coordinates;
 
     current_infowindow.setContent(currentView.innerHTML);
@@ -231,12 +241,20 @@
       title = event.currentTarget.all.title[0].innerText;
       description = event.currentTarget.all.description[0].innerText;
 
-      let callBackContent = current_infowindow.getContent();
+      callBackContent = current_infowindow.getContent();
       formUpdate.title.attributes[0].value = title;
       formUpdate.description.innerHTML = description;
 
       current_infowindow.setContent(formUpdate.innerHTML);
 
+      google.maps.event.addListener(current_infowindow, 'closeclick', function(){
+        current_infowindow.setContent(callBackContent);
+        current_infowindow.close();
+      });
+      google.maps.event.addListener(marker, 'click', function(){
+        current_infowindow.setContent(callBackContent);
+        current_infowindow.close();
+      });
       google.maps.event.addListener(current_infowindow, 'closeclick', function(){
         current_infowindow.setContent(callBackContent);
         current_infowindow.close();
@@ -247,8 +265,8 @@
   function submitUpdateForm() {
     let id = current_place_id;
 
-    formView.getElementsByTagName('label')[0].textContent = title;
-    formView.getElementsByTagName('label')[1].textContent = description;
+    formView.getElementsByTagName('label')[0].textContent = title.replace(/(^\s*)|(\s*)$/g, '\n' && '');
+    formView.getElementsByTagName('label')[1].textContent = description.replace(/(^\s*)|(\s*)$/g, '\n' && '');
 
     $.ajax({
       type: 'PATCH',
