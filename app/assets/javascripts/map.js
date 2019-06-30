@@ -14,6 +14,7 @@
   var current_place_id;
   var current_marker;
   var current_infowindow;
+  var current_infowindow_callback;
   var infowindow_id = {};
   var marker_id = {};
   var last_id = 0;
@@ -62,6 +63,7 @@
     google.maps.event.addListener(marker,'click', function() {
       if (callBackContent){
         current_infowindow.setContent(callBackContent);
+        callBackContent = null;
       }
       current_place_id = Number(Object.keys(marker_id).find(key => marker_id[key] === marker));
       current_marker = marker;
@@ -125,6 +127,7 @@
       map.addListener('click', function(event) {
         if (callBackContent){
           current_infowindow.setContent(callBackContent);
+          callBackContent = null;
         }
         deleteMarkers();
         addMarker(event.latLng);});
@@ -166,6 +169,7 @@
           google.maps.event.addListener(marker,'click', function() {
             if (callBackContent){
               current_infowindow.setContent(callBackContent);
+              callBackContent = null;
             }
             current_place_id = place.id;
             current_marker = marker;
@@ -249,14 +253,7 @@
 
     google.maps.event.addListener(current_infowindow, 'closeclick', function(){
       current_infowindow.setContent(callBackContent);
-      current_infowindow.close();
-    });
-    google.maps.event.addListener(marker, 'click', function(){
-      current_infowindow.setContent(callBackContent);
-      current_infowindow.close();
-    });
-    google.maps.event.addListener(current_infowindow, 'closeclick', function(){
-      current_infowindow.setContent(callBackContent);
+      callBackContent = null;
       current_infowindow.close();
     });
   }
