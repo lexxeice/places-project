@@ -14,7 +14,6 @@
   var current_place_id;
   var current_marker;
   var current_infowindow;
-  var current_infowindow_callback;
   var infowindow_id = {};
   var marker_id = {};
   var last_id = 0;
@@ -226,18 +225,14 @@
     markers = markers.pop();
   }
 
-  function deletePlace(){
-    if (confirm("Are you sure?")) {
-      $.ajax({
+  function deletePlace() {
+    $.ajax( {
       type: 'DELETE',
       url: '/places/'+current_place_id,
-      headers : {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
+      headers : { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
       data: {id: current_place_id},
       success: current_marker.setMap(null)
-      });
-    }
+    });
   }
 
   function updatePlace() {
