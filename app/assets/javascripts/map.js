@@ -47,7 +47,8 @@
 
     // Content for popup
     infowindow = new google.maps.InfoWindow({
-      content: formCreate
+      content: formCreate,
+      position: location
     });
     closeAllOtherInfowindow(infowindow, marker);
 
@@ -80,21 +81,16 @@
     });
 
     $('#placeCreate').bind('ajax:complete', function() {
-      if (last_id == 0) {
-        $.ajax({
-          url: '/places',
-          type: 'GET',
-          success: function(places) {
-            places.forEach(place => {
-              last_id = place.id;
-              setCurrentValue();
-            });
-          }
-        });
-      } else {
-        last_id++;
-        setCurrentValue();
-      }
+      $.ajax({
+        url: '/places',
+        type: 'GET',
+        success: function(places) {
+          places.forEach(place => {
+            last_id = place.id;
+            setCurrentValue();
+          });
+        }
+      });
       createView();
     });
   }
@@ -114,7 +110,7 @@
         center: new google.maps.LatLng(53.928365, 27.685359),
         mapTypeId: google.maps.MapTypeId.HYBRID
       });
-
+      infowindows = [];
       setAllMarkers();
 
       formCreate = document.getElementById('placeCreate');
@@ -160,12 +156,14 @@
           currentView.coordinates.value = location;
 
           infowindow = new google.maps.InfoWindow({
-            content: currentView.innerHTML
+            content: currentView.innerHTML,
+            position: location
           });
 
           infowindow_id[place.id] = infowindow;
           infowindows.push(infowindow);
           current_infowindow = infowindow;
+          marker_id[place.id] = marker;
 
           google.maps.event.addListener(marker,'click', function() {
             if (callBackContent){
@@ -191,7 +189,40 @@
           google.maps.event.addListener(marker, 'rightclick', infoCallbackClose(infowindow, marker));
 
         });
+        addMarkerPanel();
       }
+    });
+  }
+
+  function addMarkerPanel(){
+    var select = document.getElementById('selectPlace');
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(select);
+    changeSelectOptions();
+    select.addEventListener('click', function (e) {
+      for (var i = 0; i < infowindows.length; i++) {
+        var current_id = $(infowindows[i].content)[3].id;
+        if (e.target.value == current_id) {
+          map.setCenter(infowindows[i].getPosition());
+          var marker = marker_id[Number(current_id)];
+          closeAllOtherInfowindow(infowindows[i], marker);
+          infowindows[i].open(map,marker);
+        }
+      }
+    });
+  }
+
+  function changeSelectOptions(){
+    $("#selectPlace").empty();
+    $('#selectPlace').append($('<option>', {
+        text : 'Custom places'
+    }));
+    $.each(infowindows, function (i) {
+      var current_title = $(infowindows[i].content)[3].getElementsByClassName('title')[0].innerText;
+      var current_id = $(infowindows[i].content)[3].id;
+      $('#selectPlace').append($('<option>', {
+          value: current_id,
+          text : current_title
+      }));
     });
   }
 
@@ -259,6 +290,7 @@
 
     current_infowindow.setContent(currentView.innerHTML);
     markers = markers.pop();
+    changeSelectOptions();
   }
 
   function deletePlace() {
@@ -267,7 +299,11 @@
       url: '/places/'+current_place_id,
       headers : { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
       data: {id: current_place_id},
-      success: current_marker.setMap(null)
+      success: function(){
+         current_marker.setMap(null);
+         infowindows = infowindows.filter(val => val !== current_infowindow);
+         changeSelectOptions();
+      }
     });
   }
 
@@ -305,7 +341,10 @@
       },
       data: { title: title, description: description },
       success: function(){
+        infowindows = infowindows.filter(val => val !== current_infowindow);
         current_infowindow.setContent(formView.innerHTML);
+        infowindows.push(current_infowindow);
+        changeSelectOptions();
       }
     });
   }
