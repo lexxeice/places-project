@@ -18,6 +18,8 @@
   var marker_id = {};
   var last_id = 0;
   var callBackContent;
+  var input;
+  var select;
 
   function infoCallbackOpen(infowindow, marker) { return function() {
     infowindow.open(map, marker); };
@@ -124,6 +126,16 @@
 
       addSearchPanel();
 
+      document.onfullscreenchange = function(event) {
+        if (map.controls[google.maps.ControlPosition.TOP_LEFT].length > 0) {
+          location.reload();
+        }
+        else {
+          map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+          map.controls[google.maps.ControlPosition.TOP_LEFT].push(select);
+        }
+      }
+
       map.addListener('click', function(event) {
         if(formCreate){
           if (callBackContent){
@@ -198,8 +210,8 @@
   }
 
   function addMarkerPanel(){
-    var select = document.getElementById('selectPlace');
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(select);
+    select = document.getElementById('selectPlace');
+    // map.controls[google.maps.ControlPosition.TOP_LEFT].push(select);
     changeSelectOptions();
     select.addEventListener('click', function (e) {
       for (var i = 0; i < infowindows.length; i++) {
@@ -230,9 +242,9 @@
   }
 
   function addSearchPanel(){
-    var input = document.getElementById('pac-input');
+    input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
     map.addListener('bounds_changed', function() {
       searchBox.setBounds(map.getBounds());
