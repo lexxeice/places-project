@@ -1,12 +1,5 @@
 (function() {
 
-  window.onerror = function(msg) {
-    if (msg == "Uncaught TypeError: Cannot read property 'SearchBox' of undefined") {
-      location.reload();
-    }
-    return false;
-  }
-
   var map;
   var markers = [];
   var infowindows = [];
