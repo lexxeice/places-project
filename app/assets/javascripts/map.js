@@ -1,5 +1,12 @@
 (function() {
 
+  window.onerror = function(msg) {
+    if (msg == "Uncaught TypeError: Cannot read property 'SearchBox' of undefined") {
+      location.reload();
+    }
+    return false;
+  }
+
   var map;
   var markers = [];
   var infowindows = [];
@@ -86,12 +93,15 @@
         type: 'GET',
         success: function(places) {
           places.forEach(place => {
-            last_id = place.id;
-            setCurrentValue();
+            if (place.id > last_id) {
+              last_id = place.id;
+            }
           });
+          setCurrentValue();
         }
       });
       createView();
+      last_id = 0;
     });
   }
 
@@ -122,12 +132,15 @@
       addSearchPanel();
 
       map.addListener('click', function(event) {
-        if (callBackContent){
-          current_infowindow.setContent(callBackContent);
-          callBackContent = null;
+        if(formCreate){
+          if (callBackContent){
+            current_infowindow.setContent(callBackContent);
+            callBackContent = null;
+          }
+          deleteMarkers();
+          addMarker(event.latLng);
         }
-        deleteMarkers();
-        addMarker(event.latLng);});
+      });
     }
   });
 
@@ -144,9 +157,6 @@
             title:  place.title
           });
           map.setCenter(marker.getPosition());
-          if (place.id > last_id) {
-            last_id = place.id;
-          }
 
           let currentView = formView;
 
