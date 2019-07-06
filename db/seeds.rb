@@ -15,6 +15,4 @@ User.create!(first_name:  "Nikita",
              email: "nikenor11@gmail.com",
              password:              "1234567",
              password_confirmation: "1234567",
-             admin: true,
-             activated: true,
-             activated_at: Time.zone.now)
+             admin: true)

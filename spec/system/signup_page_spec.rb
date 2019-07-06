@@ -5,7 +5,6 @@ RSpec.describe 'Sign Up page', type: :system do
   before { visit '/signup' }
 
   let(:user) { create(:user) }
-  let(:string) { 'Please check your email to activate your account.' }
 
   it 'there is \'Sign Up\' title' do
     expect(page).to have_selector('h1', text: 'Sign Up')
@@ -18,6 +17,6 @@ RSpec.describe 'Sign Up page', type: :system do
     fill_in 'Password', with: user.password
     fill_in 'Password confirmation', with: user.password
     click_button 'Sign Up'
-    expect(page).to have_content(string)
+    expect(page).to have_content(user.first_name)
   end
 end
