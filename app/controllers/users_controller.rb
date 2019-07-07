@@ -7,6 +7,14 @@ class UsersController < ApplicationController
   before_action :correct_user,   only: %i[edit update]
   before_action :admin_user, only: :destroy
 
+  def search
+    if params[:search].blank?
+      redirect_to users_url
+    else
+      @users = User.search(params)
+    end
+  end
+
   def destroy
     User.find(params[:id]).destroy
     redirect_to users_url

@@ -62,4 +62,12 @@ class User < ApplicationRecord
   def forget
     update_attribute(:remember_digest, nil)
   end
+
+  def self.search(params)
+    if params[:search].present?
+      users = User.where("first_name || ' ' || last_name like ?",
+                         "%#{params[:search]}%")
+    end
+    users # returns the users containing the search words
+  end
 end
