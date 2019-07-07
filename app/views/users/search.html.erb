@@ -1,0 +1,23 @@
+<% content_for :nav do %>
+  <% if logged_in? %>
+    <%= link_to t('.my_profile_button'), edit_user_path(current_user), class: 'form-control btn btn-outline-primary my-2 my-sm-0 mr-2 ml-2' %>
+    <%= link_to_unless_current(t('.my_places_button'), current_user, class: 'form-control btn btn-outline-primary my-2 my-sm-0 mr-2 ml-2') {} %>
+    <%= link_to t('.sign_out_button'), logout_path,
+                            method: :delete,
+                            class: 'form-control btn btn-outline-secondary my-2 my-sm-0 mr-2 ml-2',
+                            data: { confirm: t('.sign_out_confirmation') } %>
+  <% else %>
+  <% end %>
+<% end %>
+
+<% content_for :main do %>
+
+<h1><%= t('.searching_results') %></h1>
+
+<%= link_to t('.back_to_all'), users_path, class: 'btn btn-sm btn-primary' %>
+
+<ul class="users">
+  <%= render @users %>
+</ul>
+
+<% end %>
