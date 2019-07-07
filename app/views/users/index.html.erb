@@ -15,6 +15,13 @@
 
 <span class="pagination_span"><%= will_paginate %></span>
 
+<div class="form-inline mt-2 mt-md-0">
+  <%= form_tag search_users_path, method: :get do %>
+   <%= text_field_tag :search, nil, placeholder: "Search" %>
+   <%= submit_tag "Search" %>
+  <% end %>
+</div>
+
 <ul class="users">
   <%= render @users %>
 </ul>
