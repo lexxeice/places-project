@@ -109,6 +109,9 @@ en:
       my_places_button: My places
       sign_out_button: Sign out
       sign_out_confirmation: Execute sign out?
+    show_map:
+      find_location: Find location...
+      marked_places: Marked places
     edit:
       find_someone_button: Find someone
       my_places_button: My places

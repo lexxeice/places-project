@@ -104,6 +104,9 @@ ru:
       my_places_button: Мои места
       sign_out_button: Выход
       sign_out_confirmation: Произвести выход?
+    show_map:
+      find_location: Найти локацию...
+      marked_places: Отмеченные места
     edit:
       find_someone_button: Найти кого-то
       my_places_button: Мои места
