@@ -17,31 +17,31 @@ RSpec.describe 'Roles behaviour', type: :system, js: true do
     User.create(admin_params)
   end
 
-  # it 'admin can not delete himself' do
-  #   sign_in(admin)
-  #   click_link 'Find someone'
-  #   expect(page).not_to have_text 'delete'
-  # end
+  it 'admin can not delete himself' do
+    sign_in(admin)
+    click_link 'Find someone'
+    expect(page).not_to have_text 'Main Admin |'
+  end
 
-  # it 'admin can delete users' do
-  #   sign_in(user)
-  #   click_link 'Sign out'
-  #   page.driver.browser.switch_to.alert.accept
-  #   sign_in(admin)
-  #   click_link 'Find someone'
-  #   click_link 'delete'
-  #   page.driver.browser.switch_to.alert.accept
-  #   expect(page).not_to have_text 'John'
-  # end
+  it 'admin can delete users' do
+    sign_in(user)
+    click_link 'Sign out'
+    page.driver.browser.switch_to.alert.accept
+    sign_in(admin)
+    click_link 'Find someone'
+    first('#user_deletion_link').click
+    page.driver.browser.switch_to.alert.accept
+    expect(page).to have_selector('#user_deletion_link', maximum: 1)
+  end
 
-  # it 'user can not delete others' do
-  #   sign_in(admin)
-  #   click_link 'Sign out'
-  #   page.driver.browser.switch_to.alert.accept
-  #   sign_in(user)
-  #   click_link 'Find someone'
-  #   expect(page).not_to have_text 'delete'
-  # end
+  it 'user can not delete others' do
+    sign_in(admin)
+    click_link 'Sign out'
+    page.driver.browser.switch_to.alert.accept
+    sign_in(user)
+    click_link 'Find someone'
+    expect(page).not_to have_text 'delete'
+  end
 
   it 'admin can delete user\'s places' do
     sign_in(user)
